@@ -1,17 +1,29 @@
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const PORT = 8080;
 
 app.use(express.json())
 
+function readHtmlData(fname) {
+    return fs.readFileSync('./static/' + fname, (err, data) => {
+        if(err) {
+            console.log(err.message);
+        } else {
+            console.log(data.toString());
+            return data.toString();
+        }
+    }).toString();
+}
+
 // REQUEST / RESPONSE
 app.get('/', (req, res) => {
     // res.end('Application Started enjoy ;)');
-    res.send('<h1>click me<h1/>');
+    res.send(readHtmlData('home.html'));
 });
 
-app.get('/cart', (req, res) => {
-    res.end('Welcome to the cart');
+app.get('/about', (req, res) => {
+    res.end(readHtmlData('about.html'));
 });
 
 app.post('/login', (req, res) => {
